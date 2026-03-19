@@ -10,14 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +33,6 @@ class FileProcessingServiceImplTest {
     @Mock
     private FileHandler zipHandler;
 
-    @InjectMocks
     private FileProcessingServiceImpl fileProcessingService;
 
     @TempDir
@@ -46,7 +41,7 @@ class FileProcessingServiceImplTest {
     @BeforeEach
     void setUp() {
         // Setup the mock handler to indicate it can handle ZIP files
-        when(zipHandler.canHandle(any(FileEvent.class))).thenAnswer(invocation -> {
+        lenient().when(zipHandler.canHandle(any(FileEvent.class))).thenAnswer(invocation -> {
             FileEvent event = invocation.getArgument(0);
             return event.getFileType() == FileType.ZIP;
         });
