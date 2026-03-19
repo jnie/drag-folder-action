@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
@@ -145,16 +146,18 @@ class WatchServiceFileSystemMonitorIntegrationTest {
 
     @Test
     @DisplayName("Should start and stop monitoring without errors")
-    void shouldStartAndStopMonitoringWithoutErrors() {
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
+    void shouldStartAndStopMonitoringWithoutErrors() throws InterruptedException {
         // Given
         List<FileEvent> capturedEvents = new ArrayList<>();
         Consumer<FileEvent> callback = capturedEvents::add;
 
         // When
         monitor.startMonitoring(tempDir, callback);
+        // Give the monitor thread time to start
+        Thread.sleep(100);
         monitor.stopMonitoring();
 
-        // Then
-        // No exceptions thrown, test passes
+        // Then - verify no exceptions thrown, test passes if it completes within timeout
     }
 }

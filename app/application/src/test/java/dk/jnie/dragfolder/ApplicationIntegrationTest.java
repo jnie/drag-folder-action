@@ -6,6 +6,7 @@ import dk.jnie.dragfolder.domain.model.FileType;
 import dk.jnie.dragfolder.domain.services.FileProcessingService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +44,7 @@ class ApplicationIntegrationTest {
 
     @Test
     @DisplayName("Should process configuration successfully")
+    @Timeout(value = 15, unit = TimeUnit.SECONDS)
     void shouldProcessConfigurationSuccessfully() {
         // Given
         Path monitorFolder = tempDir.resolve("monitor");
