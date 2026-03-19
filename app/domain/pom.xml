@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>dk.jnie</groupId>
-        <artifactId>drag-folder-action-v2-app</artifactId>
+        <artifactId>drag-folder-action-v2</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>

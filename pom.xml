@@ -15,7 +15,13 @@
     <description>DragFolderAction refactored to multi-module architecture</description>
     <packaging>pom</packaging>
     <modules>
-        <module>app</module>
+        <module>app/application</module>
+        <module>app/domain</module>
+        <module>app/service</module>
+        <module>app/inbound/cli</module>
+        <module>app/outbound/file-system</module>
+        <module>app/outbound/zip-handler</module>
+        <module>app/architecture-tests</module>
     </modules>
     <properties>
         <java.version>17</java.version>
