@@ -19,12 +19,11 @@ public class CliRunner {
     public void run(String monitorFolder, String outputFolder, int timerSeconds, boolean clearFolder) {
         log.info("Starting DragFolderAction CLI");
 
-        Configuration config = Configuration.builder()
-                .monitorFolder(monitorFolder)
-                .outputFolder(outputFolder)
-                .timerSeconds(timerSeconds)
-                .clearMonitorFolder(clearFolder)
-                .build();
+        Configuration config = Configuration.create(
+                monitorFolder,
+                outputFolder,
+                timerSeconds,
+                clearFolder);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info("Shutting down...");

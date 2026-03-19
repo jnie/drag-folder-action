@@ -9,8 +9,6 @@ import dk.jnie.dragfolder.domain.services.FileProcessingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dk.jnie.dragfolder.domain.model.FileEvent.FileEventBuilder;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -32,11 +30,10 @@ public class FileProcessingServiceImpl implements FileProcessingService {
         for (FileHandler handler : handlers) {
             for (FileType type : FileType.values()) {
                 if (type != FileType.UNKNOWN) {
-                    FileEvent testEvent = FileEvent.builder()
-                            .filePath(Path.of("test." + type.name().toLowerCase()))
-                            .fileName("test." + type.name().toLowerCase())
-                            .fileType(type)
-                            .build();
+                    FileEvent testEvent = FileEvent.create(
+                            Path.of("test." + type.name().toLowerCase()),
+                            "test." + type.name().toLowerCase(),
+                            type);
                     if (handler.canHandle(testEvent)) {
                         handlerMap.put(type, handler);
                     }

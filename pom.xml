@@ -25,7 +25,6 @@
     </modules>
     <properties>
         <java.version>17</java.version>
-        <immutables.version>2.12.1</immutables.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <archunit.version>1.4.1</archunit.version>
         <slf4j.version>2.0.16</slf4j.version>
@@ -35,19 +34,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.immutables</groupId>
-                <artifactId>value</artifactId>
-                <version>${immutables.version}</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
@@ -75,13 +64,6 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.immutables</groupId>
-                            <artifactId>value</artifactId>
-                            <version>${immutables.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

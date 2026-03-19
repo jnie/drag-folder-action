@@ -10,10 +10,4 @@
     </parent>
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-        </dependency>
-    </dependencies>
 </project>

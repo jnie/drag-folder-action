@@ -78,11 +78,10 @@ public class WatchServiceFileSystemMonitor implements FileSystemMonitor {
             if (!existingFiles.containsKey(fileName)) {
                 existingFiles.put(fileName, true);
                 FileType fileType = determineFileType(fileName);
-                FileEvent event = FileEvent.builder()
-                        .filePath(file.toPath())
-                        .fileName(fileName)
-                        .fileType(fileType)
-                        .build();
+                FileEvent event = FileEvent.create(
+                        file.toPath(),
+                        fileName,
+                        fileType);
                 newFiles.add(event);
                 log.info("New file detected: {}", fileName);
             }
