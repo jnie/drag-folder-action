@@ -21,7 +21,14 @@ jobs:
         cache: 'maven'
     
     - name: Build with Maven
-      run: mvn -B clean compile -f pom.xml -e
+      run: mvn -B clean compile -f pom.xml -e -X 2>&1 | tee build.log ; exit ${PIPESTATUS[0]}
+    
+    - name: Upload build log on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-log
+        path: build.log
     
     - name: Run tests
       run: mvn -B test -f pom.xml
