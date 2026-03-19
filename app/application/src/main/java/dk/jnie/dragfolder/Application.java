@@ -1,6 +1,6 @@
 package dk.jnie.dragfolder;
 
-import dk.jnie.dragfolder.domain.model.FileHandler;
+import dk.jnie.dragfolder.domain.outbound.FileHandler;
 import dk.jnie.dragfolder.domain.outbound.FileSystemMonitor;
 import dk.jnie.dragfolder.domain.services.FileProcessingService;
 import dk.jnie.dragfolder.inbound.cli.CliRunner;
