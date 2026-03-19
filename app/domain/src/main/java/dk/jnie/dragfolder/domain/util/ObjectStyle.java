@@ -6,6 +6,5 @@ import org.immutables.value.Value;
         typeImmutable = "*",
         typeAbstract = "*Def"
 )
-@Value.Immutable
 public @interface ObjectStyle {
 }
