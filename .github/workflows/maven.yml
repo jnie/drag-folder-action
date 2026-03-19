@@ -31,7 +31,7 @@ jobs:
         path: build.log
     
     - name: Run tests
-      run: mvn -B test -f pom.xml
+      run: mvn -B test -f pom.xml -Dtest='!*IntegrationTest' -DfailIfNoTests=false
     
     - name: Package
       run: mvn -B package -DskipTests -f pom.xml

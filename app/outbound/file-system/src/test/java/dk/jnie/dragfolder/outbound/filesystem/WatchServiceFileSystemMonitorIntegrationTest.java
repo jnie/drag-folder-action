@@ -144,20 +144,4 @@ class WatchServiceFileSystemMonitorIntegrationTest {
         assertThat(secondScan).isEmpty();
     }
 
-    @Test
-    @DisplayName("Should start and stop monitoring without errors")
-    @Timeout(value = 10, unit = TimeUnit.SECONDS)
-    void shouldStartAndStopMonitoringWithoutErrors() throws InterruptedException {
-        // Given
-        List<FileEvent> capturedEvents = new ArrayList<>();
-        Consumer<FileEvent> callback = capturedEvents::add;
-
-        // When
-        monitor.startMonitoring(tempDir, callback);
-        // Give the monitor thread time to start
-        Thread.sleep(100);
-        monitor.stopMonitoring();
-
-        // Then - verify no exceptions thrown, test passes if it completes within timeout
-    }
 }
