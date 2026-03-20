@@ -13,12 +13,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Set;
+import java.util.EnumSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ZipFileHandler implements FileHandler {
     private static final Logger log = LoggerFactory.getLogger(ZipFileHandler.class);
+
+    @Override
+    public Set<FileType> getSupportedTypes() {
+        return EnumSet.of(FileType.ZIP);
+    }
 
     @Override
     public boolean canHandle(FileEvent fileEvent) {

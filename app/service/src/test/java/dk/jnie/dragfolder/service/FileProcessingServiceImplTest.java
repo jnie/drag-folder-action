@@ -16,7 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,11 +42,11 @@ class FileProcessingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Setup the mock handler to indicate it can handle ZIP files
         lenient().when(zipHandler.canHandle(any(FileEvent.class))).thenAnswer(invocation -> {
             FileEvent event = invocation.getArgument(0);
             return event.getFileType() == FileType.ZIP;
         });
+        lenient().when(zipHandler.getSupportedTypes()).thenReturn(EnumSet.of(FileType.ZIP));
         
         fileProcessingService = new FileProcessingServiceImpl(fileSystemMonitor, Collections.singletonList(zipHandler));
     }

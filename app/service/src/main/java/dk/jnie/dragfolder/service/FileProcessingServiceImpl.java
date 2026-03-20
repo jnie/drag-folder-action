@@ -11,37 +11,23 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class FileProcessingServiceImpl implements FileProcessingService {
     private static final Logger log = LoggerFactory.getLogger(FileProcessingServiceImpl.class);
 
     private final FileSystemMonitor fileSystemMonitor;
-    private final Map<FileType, FileHandler> handlers;
+    private final List<FileHandler> handlers;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private volatile Path outputPath;
 
     public FileProcessingServiceImpl(FileSystemMonitor fileSystemMonitor, List<FileHandler> handlers) {
         this.fileSystemMonitor = fileSystemMonitor;
-        Map<FileType, FileHandler> handlerMap = new ConcurrentHashMap<>();
-        for (FileHandler handler : handlers) {
-            for (FileType type : FileType.values()) {
-                if (type != FileType.UNKNOWN) {
-                    FileEvent testEvent = FileEvent.create(
-                            Path.of("test." + type.name().toLowerCase()),
-                            "test." + type.name().toLowerCase(),
-                            type);
-                    if (handler.canHandle(testEvent)) {
-                        handlerMap.put(type, handler);
-                    }
-                }
-            }
-        }
-        this.handlers = handlerMap;
+        this.handlers = new ArrayList<>(handlers);
     }
 
     @Override
@@ -75,16 +61,28 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     public void processFile(FileEvent fileEvent) {
         log.info("Processing file: {}", fileEvent.getFileName());
 
-        Optional<FileHandler> handler = handlers.entrySet().stream()
-                .filter(e -> e.getKey() == fileEvent.getFileType())
-                .map(Map.Entry::getValue)
+        Optional<FileHandler> handler = handlers.stream()
+                .filter(h -> h.canHandle(fileEvent))
                 .findFirst();
 
         if (handler.isPresent()) {
             handler.get().handle(fileEvent, outputPath);
         } else {
-            log.warn("No handler found for file type: {}", fileEvent.getFileType());
+            log.warn("No handler found for file type: {}. " +
+                     "Available handlers: {} supporting: {}",
+                     fileEvent.getFileType(),
+                     handlers.stream()
+                         .map(h -> h.getClass().getSimpleName())
+                         .collect(Collectors.joining(", ")),
+                     getAllSupportedTypes());
         }
+    }
+
+    private String getAllSupportedTypes() {
+        return handlers.stream()
+                .flatMap(h -> h.getSupportedTypes().stream())
+                .map(FileType::name)
+                .collect(Collectors.joining(", "));
     }
 
     @Override

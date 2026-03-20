@@ -40,12 +40,11 @@ drag-folder-action/
 1. **Always check existing modules first** - Understand the architecture before making changes
 2. **Keep the module boundaries clean** - Don't mix concerns across modules
 3. **Domain layer should be vendor-agnostic** - No Spring annotations in domain/
-4. **Use Lombok** - Already configured in POMs
-5. **main branch** - is off limits, when changing code always create a branch
-6. **Run tests before committing** - Use `./mvnw test`
-7. **Port/adapter pattern** - External systems go in `app/outbound/`, interfaces in `app/domain/`
-8. **Port/adapter pattern** - CLI interface in `app/inbound/`, depends only on domain
-9. **Dependency versions** - keep versions in properties in root pom.xml
+4. **main branch** - is off limits, when changing code always create a branch
+5. **Run tests before committing** - Use `./mvnw test`
+6. **Port/adapter pattern** - External systems go in `app/outbound/`, interfaces in `app/domain/`
+7. **Port/adapter pattern** - CLI interface in `app/inbound/`, depends only on domain
+8. **Dependency versions** - keep versions in properties in root pom.xml
 
 ### Type safety & Code quality
 
@@ -77,11 +76,12 @@ When you are tasked with a feature or bug fix, follow this exact sequence:
 
 ### Phase 2: Implementation & Testing
 1. **Branch from a clean main** - Make sure you have all the latest from main branch
-2. **Execute:** Modify files. Do not delete comments unless they are obsolete.
-3. **Local Validation:**
+2. **Branch naming** - make /feature/{name} for new feature sets, bugfix/{name} for fixing bugs
+3. **Execute:** Modify files. Do not delete comments unless they are obsolete.
+4. **Local Validation:**
    - Build command: `./mvnw clean compile`
    - Test command: `./mvnw test`
-4. **Self-Correction:** If tests fail, analyze the logs, fix the code, and re-run tests until green. **Do not ask for help until you have attempted 2 logical fixes.**
+5. **Self-Correction:** If tests fail, analyze the logs, fix the code, and re-run tests until green. **Do not ask for help until you have attempted 2 logical fixes.**
 
 ---
 ### ⚡ Quick Reference
