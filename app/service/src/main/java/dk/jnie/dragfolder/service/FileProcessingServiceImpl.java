@@ -23,6 +23,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     private final FileSystemMonitor fileSystemMonitor;
     private final Map<FileType, FileHandler> handlers;
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private volatile Path outputPath;
 
     public FileProcessingServiceImpl(FileSystemMonitor fileSystemMonitor, List<FileHandler> handlers) {
         this.fileSystemMonitor = fileSystemMonitor;
@@ -57,6 +58,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
             return;
         }
 
+        this.outputPath = Path.of(config.getOutputFolder());
         log.info("Starting to monitor folder: {}", monitorPath);
         int timeoutSeconds = config.getTimerSeconds();
         fileSystemMonitor.startMonitoring(monitorPath, this::processFile, timeoutSeconds);
@@ -79,8 +81,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
                 .findFirst();
 
         if (handler.isPresent()) {
-            Path outputFolder = Path.of(System.getProperty("java.io.tmpdir"));
-            handler.get().handle(fileEvent, outputFolder);
+            handler.get().handle(fileEvent, outputPath);
         } else {
             log.warn("No handler found for file type: {}", fileEvent.getFileType());
         }
