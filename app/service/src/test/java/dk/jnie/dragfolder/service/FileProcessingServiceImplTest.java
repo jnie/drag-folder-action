@@ -64,7 +64,7 @@ class FileProcessingServiceImplTest {
         fileProcessingService.startMonitoring(config);
 
         // Then
-        verify(fileSystemMonitor).startMonitoring(eq(tempDir), any(Consumer.class));
+        verify(fileSystemMonitor).startMonitoring(eq(tempDir), any(Consumer.class), eq(5));
     }
 
     @Test

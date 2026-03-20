@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class WatchServiceFileSystemMonitor implements FileSystemMonitor {
@@ -25,11 +26,28 @@ public class WatchServiceFileSystemMonitor implements FileSystemMonitor {
 
     @Override
     public void startMonitoring(Path folderPath, Consumer<FileEvent> onNewFile) {
+        startMonitoring(folderPath, onNewFile, null);
+    }
+
+    @Override
+    public void startMonitoring(Path folderPath, Consumer<FileEvent> onNewFile, Integer timeoutSeconds) {
         this.onNewFileCallback = onNewFile;
         monitoring = true;
 
+        final long timeoutMillis = (timeoutSeconds != null && timeoutSeconds > 0) 
+                ? TimeUnit.SECONDS.toMillis(timeoutSeconds) 
+                : -1;
+
         monitorThread = new Thread(() -> {
+            long startTime = System.currentTimeMillis();
             while (monitoring) {
+                if (timeoutMillis > 0) {
+                    long elapsed = System.currentTimeMillis() - startTime;
+                    if (elapsed >= timeoutMillis) {
+                        log.info("Monitoring timeout reached after {} seconds", timeoutSeconds);
+                        break;
+                    }
+                }
                 try {
                     Thread.sleep(5000);
                     List<FileEvent> newFiles = getNewFiles(folderPath);
