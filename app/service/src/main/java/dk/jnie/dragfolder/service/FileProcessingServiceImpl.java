@@ -58,7 +58,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
         }
 
         log.info("Starting to monitor folder: {}", monitorPath);
-        fileSystemMonitor.startMonitoring(monitorPath, this::processFile);
+        int timeoutSeconds = config.getTimerSeconds();
+        fileSystemMonitor.startMonitoring(monitorPath, this::processFile, timeoutSeconds);
     }
 
     @Override

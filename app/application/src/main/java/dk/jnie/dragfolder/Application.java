@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class Application {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "cli.enabled", havingValue = "true", matchIfMissing = true)
     public CommandLineRunner runner(FileProcessingService fileProcessingService) {
         return args -> {
             String monitorFolder = System.getProperty("monitor.folder", "/tmp/monitor");

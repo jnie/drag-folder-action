@@ -32,6 +32,8 @@ public class CliRunner {
 
         fileProcessingService.startMonitoring(config);
 
+        // Note: In tests, disable CLI runner using cli.enabled=false property
+        // to prevent scanner.nextLine() from blocking (see Application.java)
         log.info("Monitoring started. Press Enter to stop.");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();

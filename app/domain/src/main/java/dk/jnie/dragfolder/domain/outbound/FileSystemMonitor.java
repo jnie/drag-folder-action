@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 public interface FileSystemMonitor {
     void startMonitoring(Path folderPath, Consumer<FileEvent> onNewFile);
+    void startMonitoring(Path folderPath, Consumer<FileEvent> onNewFile, Integer timeoutSeconds);
     void stopMonitoring();
     List<FileEvent> getNewFiles(Path folderPath);
 }

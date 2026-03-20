@@ -40,6 +40,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should detect new files in folder")
     void shouldDetectNewFilesInFolder() throws IOException {
         // Given
@@ -56,6 +57,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should return empty list for empty folder")
     void shouldReturnEmptyListForEmptyFolder() {
         // When
@@ -66,6 +68,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should return empty list for non-existent folder")
     void shouldReturnEmptyListForNonExistentFolder() {
         // Given
@@ -79,6 +82,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should correctly identify file types by extension")
     void shouldCorrectlyIdentifyFileTypesByExtension() throws IOException {
         // Given
@@ -101,6 +105,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should mark unknown file types correctly")
     void shouldMarkUnknownFileTypesCorrectly() throws IOException {
         // Given
@@ -115,6 +120,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should skip directories when scanning for files")
     void shouldSkipDirectoriesWhenScanningForFiles() throws IOException {
         // Given
@@ -130,6 +136,7 @@ class WatchServiceFileSystemMonitorIntegrationTest {
     }
 
     @Test
+    @Timeout(value = 10, unit = TimeUnit.SECONDS)
     @DisplayName("Should not return same file twice")
     void shouldNotReturnSameFileTwice() throws IOException {
         // Given
