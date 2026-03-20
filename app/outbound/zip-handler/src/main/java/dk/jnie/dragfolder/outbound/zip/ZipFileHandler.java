@@ -28,8 +28,8 @@ public class ZipFileHandler implements FileHandler {
     @Override
     public void handle(FileEvent fileEvent, Path outputFolder) {
         File zipFile = fileEvent.getFilePath().toFile();
-        String outputDir = outputFolder.resolve(extractBaseName(zipFile.getName())).toString();
-        File outputDirFile = new File(outputDir);
+        Path outputDirPath = outputFolder.resolve(extractBaseName(zipFile.getName()));
+        File outputDirFile = outputDirPath.toFile();
 
         if (!outputDirFile.exists()) {
             outputDirFile.mkdirs();
@@ -40,19 +40,25 @@ public class ZipFileHandler implements FileHandler {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 if (entry.isDirectory()) {
-                    new File(outputDir, entry.getName()).mkdirs();
+                    new File(outputDirFile, entry.getName()).mkdirs();
                 } else {
-                    extractEntry(zf, entry, outputDir);
+                    extractEntry(zf, entry, outputDirFile, outputDirPath);
                 }
             }
-            log.info("Extracted {} to {}", zipFile.getName(), outputDir);
+            log.info("Extracted {} to {}", zipFile.getName(), outputDirFile);
         } catch (IOException e) {
             log.error("Failed to extract zip file: {}", e.getMessage());
         }
     }
 
-    private void extractEntry(ZipFile zipFile, ZipEntry entry, String outputDir) throws IOException {
+    private void extractEntry(ZipFile zipFile, ZipEntry entry, File outputDir, Path outputDirPath) throws IOException {
         File outputFile = new File(outputDir, entry.getName());
+        Path resolvedPath = outputFile.toPath().normalize();
+        Path basePath = outputDirPath.normalize();
+        if (!resolvedPath.startsWith(basePath)) {
+            log.warn("Skipping potentially malicious zip entry: {}", entry.getName());
+            return;
+        }
         try (InputStream is = zipFile.getInputStream(entry);
              OutputStream os = new BufferedOutputStream(new FileOutputStream(outputFile))) {
             byte[] buffer = new byte[1024];
